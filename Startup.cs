@@ -26,8 +26,8 @@ namespace dacodes_APICORE
         public void ConfigureServices(IServiceCollection services)
         {
                 services.AddMvc();
-                services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
+                services.AddDbContext<ApiDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("ApiDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
