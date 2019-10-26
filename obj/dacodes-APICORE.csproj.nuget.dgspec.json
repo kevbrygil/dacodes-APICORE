@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/gilnextor/dacodes-APICORE/dacodes-APICORE.csproj": {}
+    "/home/gtamayo/dacodes-APICORE/dacodes-APICORE.csproj": {}
   },
   "projects": {
-    "/home/gilnextor/dacodes-APICORE/dacodes-APICORE.csproj": {
+    "/home/gtamayo/dacodes-APICORE/dacodes-APICORE.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/gilnextor/dacodes-APICORE/dacodes-APICORE.csproj",
+        "projectUniqueName": "/home/gtamayo/dacodes-APICORE/dacodes-APICORE.csproj",
         "projectName": "dacodes-APICORE",
-        "projectPath": "/home/gilnextor/dacodes-APICORE/dacodes-APICORE.csproj",
-        "packagesPath": "/home/gilnextor/.nuget/packages/",
-        "outputPath": "/home/gilnextor/dacodes-APICORE/obj/",
+        "projectPath": "/home/gtamayo/dacodes-APICORE/dacodes-APICORE.csproj",
+        "packagesPath": "/home/gtamayo/.nuget/packages/",
+        "outputPath": "/home/gtamayo/dacodes-APICORE/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/gilnextor/.nuget/NuGet/NuGet.Config"
+          "/home/gtamayo/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
