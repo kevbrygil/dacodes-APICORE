@@ -18,6 +18,7 @@ namespace dacodes_APICORE.Models
         public int Hours{get; set;}
         [DefaultValue(1)]
         public int Score{get; set;}
+        public Guid CourseFK { get; set; }
         [ForeignKey("CourseFK")]
         public Course Course{ get; set; }
         public Guid Created_by{get; set;}

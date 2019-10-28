@@ -11,50 +11,48 @@ namespace dacodes_APICORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class ChoicesController : ControllerBase
     {
         private readonly ApiDbContext _context;
 
-        public UsersController(ApiDbContext context)
+        public ChoicesController(ApiDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Choices
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Choice>>> GetChoices()
         {
-            return await _context.Users.Include(i => i.Role).ToListAsync();
+            return await _context.Choices.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Choices/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<Choice>> GetChoice(Guid id)
         {
-            //var user = await _context.Users.FindAsync(id);
+            var choice = await _context.Choices.FindAsync(id);
 
-            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
-
-            if (user == null)
+            if (choice == null)
             {
                 return NotFound();
-            }            
+            }
 
-            return user;
+            return choice;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Choices/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
+        public async Task<IActionResult> PutChoice(Guid id, Choice choice)
         {
-            if (id != user.Id)
+            if (id != choice.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(choice).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +60,7 @@ namespace dacodes_APICORE.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!ChoiceExists(id))
                 {
                     return NotFound();
                 }
@@ -75,38 +73,37 @@ namespace dacodes_APICORE.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Choices
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Choice>> PostChoice(Choice choice)
         {
-            _context.Users.Add(user);
+            _context.Choices.Add(choice);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction("GetChoice", new { id = choice.Id }, choice);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Choices/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(Guid id)
+        public async Task<ActionResult<Choice>> DeleteChoice(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var choice = await _context.Choices.FindAsync(id);
+            if (choice == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.Choices.Remove(choice);
             await _context.SaveChangesAsync();
 
-            return user;
+            return choice;
         }
 
-        private bool UserExists(Guid id)
+        private bool ChoiceExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Choices.Any(e => e.Id == id);
         }
     }
 }

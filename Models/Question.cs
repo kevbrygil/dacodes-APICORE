@@ -13,6 +13,7 @@ namespace dacodes_APICORE.Models
         public string Description{get; set;}
         public string Code{get; set;}
         public int Score{get; set;}
+        public Guid LessonFK { get; set; }
         [ForeignKey("LessonFK")]
         public Lesson Lessons{ get; set; }
         public string Type_question{get; set;}    

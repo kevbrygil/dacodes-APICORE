@@ -11,50 +11,48 @@ namespace dacodes_APICORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class EnrollmentsController : ControllerBase
     {
         private readonly ApiDbContext _context;
 
-        public UsersController(ApiDbContext context)
+        public EnrollmentsController(ApiDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Enrollments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Enrollment>>> GetEnrollments()
         {
-            return await _context.Users.Include(i => i.Role).ToListAsync();
+            return await _context.Enrollments.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Enrollments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<Enrollment>> GetEnrollment(Guid id)
         {
-            //var user = await _context.Users.FindAsync(id);
+            var enrollment = await _context.Enrollments.FindAsync(id);
 
-            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
-
-            if (user == null)
+            if (enrollment == null)
             {
                 return NotFound();
-            }            
+            }
 
-            return user;
+            return enrollment;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Enrollments/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
+        public async Task<IActionResult> PutEnrollment(Guid id, Enrollment enrollment)
         {
-            if (id != user.Id)
+            if (id != enrollment.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(enrollment).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +60,7 @@ namespace dacodes_APICORE.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!EnrollmentExists(id))
                 {
                     return NotFound();
                 }
@@ -75,38 +73,37 @@ namespace dacodes_APICORE.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Enrollments
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Enrollment>> PostEnrollment(Enrollment enrollment)
         {
-            _context.Users.Add(user);
+            _context.Enrollments.Add(enrollment);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction("GetEnrollment", new { id = enrollment.Id }, enrollment);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Enrollments/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(Guid id)
+        public async Task<ActionResult<Enrollment>> DeleteEnrollment(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var enrollment = await _context.Enrollments.FindAsync(id);
+            if (enrollment == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.Enrollments.Remove(enrollment);
             await _context.SaveChangesAsync();
 
-            return user;
+            return enrollment;
         }
 
-        private bool UserExists(Guid id)
+        private bool EnrollmentExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Enrollments.Any(e => e.Id == id);
         }
     }
 }

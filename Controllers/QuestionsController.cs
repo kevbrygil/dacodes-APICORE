@@ -11,50 +11,48 @@ namespace dacodes_APICORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class QuestionsController : ControllerBase
     {
         private readonly ApiDbContext _context;
 
-        public UsersController(ApiDbContext context)
+        public QuestionsController(ApiDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Questions
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {
-            return await _context.Users.Include(i => i.Role).ToListAsync();
+            return await _context.Questions.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Questions/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<Question>> GetQuestion(Guid id)
         {
-            //var user = await _context.Users.FindAsync(id);
+            var question = await _context.Questions.FindAsync(id);
 
-            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
-
-            if (user == null)
+            if (question == null)
             {
                 return NotFound();
-            }            
+            }
 
-            return user;
+            return question;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Questions/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
+        public async Task<IActionResult> PutQuestion(Guid id, Question question)
         {
-            if (id != user.Id)
+            if (id != question.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(question).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +60,7 @@ namespace dacodes_APICORE.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!QuestionExists(id))
                 {
                     return NotFound();
                 }
@@ -75,38 +73,37 @@ namespace dacodes_APICORE.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Questions
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Question>> PostQuestion(Question question)
         {
-            _context.Users.Add(user);
+            _context.Questions.Add(question);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction("GetQuestion", new { id = question.Id }, question);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Questions/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(Guid id)
+        public async Task<ActionResult<Question>> DeleteQuestion(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var question = await _context.Questions.FindAsync(id);
+            if (question == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.Questions.Remove(question);
             await _context.SaveChangesAsync();
 
-            return user;
+            return question;
         }
 
-        private bool UserExists(Guid id)
+        private bool QuestionExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Questions.Any(e => e.Id == id);
         }
     }
 }

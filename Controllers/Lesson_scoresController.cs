@@ -11,50 +11,48 @@ namespace dacodes_APICORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class Lesson_scoresController : ControllerBase
     {
         private readonly ApiDbContext _context;
 
-        public UsersController(ApiDbContext context)
+        public Lesson_scoresController(ApiDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Lesson_scores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Lesson_score>>> GetLesson_scores()
         {
-            return await _context.Users.Include(i => i.Role).ToListAsync();
+            return await _context.Lesson_scores.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Lesson_scores/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<Lesson_score>> GetLesson_score(Guid id)
         {
-            //var user = await _context.Users.FindAsync(id);
+            var lesson_score = await _context.Lesson_scores.FindAsync(id);
 
-            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
-
-            if (user == null)
+            if (lesson_score == null)
             {
                 return NotFound();
-            }            
+            }
 
-            return user;
+            return lesson_score;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Lesson_scores/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
+        public async Task<IActionResult> PutLesson_score(Guid id, Lesson_score lesson_score)
         {
-            if (id != user.Id)
+            if (id != lesson_score.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(lesson_score).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +60,7 @@ namespace dacodes_APICORE.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!Lesson_scoreExists(id))
                 {
                     return NotFound();
                 }
@@ -75,38 +73,37 @@ namespace dacodes_APICORE.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Lesson_scores
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Lesson_score>> PostLesson_score(Lesson_score lesson_score)
         {
-            _context.Users.Add(user);
+            _context.Lesson_scores.Add(lesson_score);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction("GetLesson_score", new { id = lesson_score.Id }, lesson_score);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Lesson_scores/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(Guid id)
+        public async Task<ActionResult<Lesson_score>> DeleteLesson_score(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var lesson_score = await _context.Lesson_scores.FindAsync(id);
+            if (lesson_score == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.Lesson_scores.Remove(lesson_score);
             await _context.SaveChangesAsync();
 
-            return user;
+            return lesson_score;
         }
 
-        private bool UserExists(Guid id)
+        private bool Lesson_scoreExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Lesson_scores.Any(e => e.Id == id);
         }
     }
 }

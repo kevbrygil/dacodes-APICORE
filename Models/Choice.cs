@@ -10,6 +10,7 @@ namespace dacodes_APICORE.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        public Guid QuestionFK{ get; set; }
         [ForeignKey("QuestionFK")]
         public Lesson Questions{ get; set; }
         public bool Is_correct{get; set;}

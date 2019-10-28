@@ -11,50 +11,48 @@ namespace dacodes_APICORE.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class TokensController : ControllerBase
     {
         private readonly ApiDbContext _context;
 
-        public UsersController(ApiDbContext context)
+        public TokensController(ApiDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/Tokens
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<Token>>> GetTokens()
         {
-            return await _context.Users.Include(i => i.Role).ToListAsync();
+            return await _context.Tokens.ToListAsync();
         }
 
-        // GET: api/Users/5
+        // GET: api/Tokens/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(Guid id)
+        public async Task<ActionResult<Token>> GetToken(Guid id)
         {
-            //var user = await _context.Users.FindAsync(id);
+            var token = await _context.Tokens.FindAsync(id);
 
-            var user = await _context.Users.Include(i => i.Role).FirstOrDefaultAsync(i => i.Id == id);
-
-            if (user == null)
+            if (token == null)
             {
                 return NotFound();
-            }            
+            }
 
-            return user;
+            return token;
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Tokens/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(Guid id, User user)
+        public async Task<IActionResult> PutToken(Guid id, Token token)
         {
-            if (id != user.Id)
+            if (id != token.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(user).State = EntityState.Modified;
+            _context.Entry(token).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +60,7 @@ namespace dacodes_APICORE.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!TokenExists(id))
                 {
                     return NotFound();
                 }
@@ -75,38 +73,37 @@ namespace dacodes_APICORE.Controllers
             return NoContent();
         }
 
-        // POST: api/Users
+        // POST: api/Tokens
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<Token>> PostToken(Token token)
         {
-            _context.Users.Add(user);
+            _context.Tokens.Add(token);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetUser", new { id = user.Id }, user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction("GetToken", new { id = token.Id }, token);
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Tokens/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(Guid id)
+        public async Task<ActionResult<Token>> DeleteToken(Guid id)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var token = await _context.Tokens.FindAsync(id);
+            if (token == null)
             {
                 return NotFound();
             }
 
-            _context.Users.Remove(user);
+            _context.Tokens.Remove(token);
             await _context.SaveChangesAsync();
 
-            return user;
+            return token;
         }
 
-        private bool UserExists(Guid id)
+        private bool TokenExists(Guid id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.Tokens.Any(e => e.Id == id);
         }
     }
 }

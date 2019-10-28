@@ -2,7 +2,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
-using System.Collections.Generic;
 
 namespace dacodes_APICORE.Models
 {
@@ -10,10 +9,13 @@ namespace dacodes_APICORE.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        public Guid UserFK { get; set; }
         [ForeignKey("UserFK")]
         public User User{get;set;}
+        public Guid CourseFK { get; set; }
         [ForeignKey("CourseFK")]
         public Course Course{get;set;}
+        public Guid Lesson_scoreFK { get; set; }
         [ForeignKey("Lesson_scoreFK")]
         public Lesson_score Lesson_Score{get; set;}
         public DateTime Date_of_enrollment{get; set;}

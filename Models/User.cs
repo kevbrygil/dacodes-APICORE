@@ -23,9 +23,11 @@ namespace dacodes_APICORE.Models
         public string Status {get; set;}
         [DefaultValue(true)]
         public bool Active{get; set;}
+        public Guid RoleFK { get; set; }
         [ForeignKey("RoleFK")]
         public Role Role{ get; set; }
         public List<Token> Tokens{get;set;}
+        public List<Enrollment> Enrollments{get;set;}
         public DateTime Created_at {get; set;}
         public DateTime? Updated_at {get; set;}
     }

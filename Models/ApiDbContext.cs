@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -10,6 +9,12 @@ namespace dacodes_APICORE.Models
         public DbSet<User> Users{get;set;}
         public DbSet<Role> Roles{get;set;}
         public DbSet<Course> Courses{get;set;}
+        public DbSet<Choice> Choices{get;set;}
+        public DbSet<Enrollment> Enrollments{get;set;}
+        public DbSet<Lesson_score> Lesson_scores{get;set;}
+        public DbSet<Lesson> Lessons{get;set;}
+        public DbSet<Question> Questions{get;set;}
+        public DbSet<Token> Tokens{get;set;}
         
         public ApiDbContext(DbContextOptions<ApiDbContext> options) : base(options) {
             ChangeTracker.Tracked += OnEntityTracked;
@@ -21,7 +26,7 @@ namespace dacodes_APICORE.Models
             modelBuilder.Entity<Course>().HasIndex(u => u.Name).IsUnique();
             modelBuilder.Entity<Course>().HasIndex(u => u.Code).IsUnique();
             modelBuilder.Entity<Lesson>().Property(f => f.Order).ValueGeneratedOnAdd();
-            modelBuilder.Entity<Enrollment>().Property(b => b.Date_of_enrollment).HasDefaultValueSql("GETUTCDATE()");
+            modelBuilder.Entity<Enrollment>().Property(b => b.Date_of_enrollment).HasDefaultValueSql("now() at time zone 'utc'");
         }
         public override int SaveChanges()
         {
