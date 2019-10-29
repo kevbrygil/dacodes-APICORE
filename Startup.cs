@@ -1,3 +1,4 @@
+using System;
 using dacodes_APICORE.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,8 +26,17 @@ namespace dacodes_APICORE
                 services.AddMvc().AddNewtonsoftJson(options => {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
+                var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
                 services.AddDbContext<ApiDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("ApiDbContext")));
+                options.UseNpgsql(connectionString));
+        }
+
+        public void ConfigureDevelopmentServices(IServiceCollection services)
+        {
+            services.AddMvc().AddNewtonsoftJson(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+            services.AddDbContext<ApiDbContext>(options =>options.UseNpgsql(Configuration.GetConnectionString("ApiDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
