@@ -1,10 +1,24 @@
-version: '3.4'
+version: '3.5'
  
 networks:
   dacodes_apicore-dev:
     driver: bridge 
  
 services:
+  postgres_image:
+    image: postgres:latest
+    ports:
+      - "5432"
+    restart: always
+    volumes:
+      - db_volume:/var/lib/postgresql/data
+      - ./dbscripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: "gilbert"
+      POSTGRES_PASSWORD: "12345678"
+      POSTGRES_DB: "dacodes_db"
+    networks:
+      - dacodes_apicore-dev
   dacodes_APICORE:
     image: dacodes_apicore:latest
     depends_on:
@@ -13,25 +27,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5002:5002"     
+      - "5002:80"     
     environment:
       DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=dacodes_db;username=gilbert;password=12345678"
     networks:
       - dacodes_apicore-dev  
-  
-  postgres_image:
-    image: postgres:latest
-    ports:
-      - "5432"
-    restart: always
-    volumes:
-      - db_volume:/var/lib/postgresql/data
-      - ./dbscripts/seed.sql :/docker-entrypoint-initdb.d/seed.sql
-    environment:
-      POSTGRES_USER: "gilbert"
-      POSTGRES_PASSWORD: "12345678"
-      POSTGRES_DB: "dacodes_db"
-    networks:
-      - dacodes_apicore-dev
 volumes:
   db_volume:
