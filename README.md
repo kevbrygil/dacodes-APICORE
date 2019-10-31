@@ -22,6 +22,8 @@ Ver archivo API-Endpoint.pdf
 
 **EntityFrameworkCore**: Por el tiempo corto, un ORM puede ayudar para la comunicación con la bd. [Entity Framework is an object-relational mapper (O/RM) that enables .NET developers to work with a database using .NET objects. It eliminates the need for most of the data-access code that developers usually need to write.]
 
+**JWT**: Para la creación de tokens JWT y cumple con los standares y es de las mas utilizadas, por lo que cuenta con mucha documentación.
+
 ### TODO
 
 - Actualiza, Eliminar y Búsqueda por ID (Course, User, Lesson, Role, Question)
