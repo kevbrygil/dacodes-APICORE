@@ -2,12 +2,12 @@ using System;
 using dacodes_APICORE.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+using Microsoft.OpenApi.Models;
 
 namespace dacodes_APICORE
 {
@@ -29,6 +29,11 @@ namespace dacodes_APICORE
                 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
                 services.AddDbContext<ApiDbContext>(options =>
                 options.UseNpgsql(connectionString));
+
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "DACODES-APICORE", Version = "v1" });
+                });
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
@@ -37,6 +42,11 @@ namespace dacodes_APICORE
                 options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
             services.AddDbContext<ApiDbContext>(options =>options.UseNpgsql(Configuration.GetConnectionString("ApiDbContext")));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DACODES-APICORE V1", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +64,17 @@ namespace dacodes_APICORE
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DACODES-APICORE V1");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

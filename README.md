@@ -10,7 +10,7 @@ vanguardia junto con otras tecnologias.
 
 ### Instalación
 
-Ver archivo Install.pdf
+Ver archivo API Platform Installation.pdf
 
 ### Documentación
 
